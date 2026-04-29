@@ -1,0 +1,11 @@
+{
+  "name": "paper2data",
+  "version": "0.1.0",
+  "description": "Local SVG/PDF plot digitizer for extracting calibrated data from vector figures.",
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "dev": "node server.mjs"
+  },
+  "license": "MIT"
+}

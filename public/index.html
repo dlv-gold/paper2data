@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>paper2data</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <main class="app">
+      <aside class="sidebar" aria-label="Digitizer controls">
+        <div class="brand">
+          <h1>paper2data</h1>
+          <span id="pdfStatus">No PDF loaded</span>
+        </div>
+
+        <section class="control-section">
+          <label class="file-button">
+            <input id="pdfInput" type="file" accept="application/pdf">
+            Open PDF
+          </label>
+        </section>
+
+        <section class="control-section compact">
+          <button id="prevPage" type="button" title="Previous page">&lt;</button>
+          <label>
+            Page
+            <input id="pageInput" type="number" min="1" value="1">
+          </label>
+          <span id="pageCount">/ 0</span>
+          <button id="nextPage" type="button" title="Next page">&gt;</button>
+        </section>
+
+        <section class="control-section compact">
+          <button id="zoomOut" type="button" title="Zoom out">-</button>
+          <span id="zoomLabel">100%</span>
+          <button id="zoomIn" type="button" title="Zoom in">+</button>
+        </section>
+
+        <section class="control-section">
+          <div class="segmented" role="group" aria-label="Mode">
+            <button id="panMode" type="button">Pan</button>
+            <button class="active" id="selectMode" type="button">Select</button>
+            <button id="calibrateMode" type="button">Calibrate</button>
+          </div>
+        </section>
+
+        <section class="control-section marker-grid" aria-label="Calibration markers">
+          <button class="active" data-marker="x1" type="button">X1</button>
+          <button data-marker="x2" type="button">X2</button>
+          <button data-marker="y1" type="button">Y1</button>
+          <button data-marker="y2" type="button">Y2</button>
+        </section>
+
+        <section class="axis-section">
+          <h2>X axis</h2>
+          <label>
+            Scale
+            <select id="xScale">
+              <option value="linear">Linear</option>
+              <option value="log10">Log10</option>
+            </select>
+          </label>
+          <div class="pair">
+            <label>X1 <input id="x1Value" type="number" value="0" step="any"></label>
+            <label>X2 <input id="x2Value" type="number" value="1" step="any"></label>
+          </div>
+        </section>
+
+        <section class="axis-section">
+          <h2>Y axis</h2>
+          <label>
+            Scale
+            <select id="yScale">
+              <option value="linear">Linear</option>
+              <option value="log10">Log10</option>
+            </select>
+          </label>
+          <div class="pair">
+            <label>Y1 <input id="y1Value" type="number" value="0" step="any"></label>
+            <label>Y2 <input id="y2Value" type="number" value="1" step="any"></label>
+          </div>
+        </section>
+
+        <section class="axis-section">
+          <h2>Output</h2>
+          <label>
+            Step
+            <input id="sampleStep" type="number" min="0.05" step="0.05" value="0.5">
+          </label>
+          <label>
+            Points
+            <input id="outputPoints" type="number" min="0" step="1" placeholder="raw">
+          </label>
+          <div class="pair">
+            <label>X min <input id="xMin" type="number" step="any" placeholder="auto"></label>
+            <label>X max <input id="xMax" type="number" step="any" placeholder="auto"></label>
+          </div>
+          <label>
+            Order
+            <select id="pointOrder">
+              <option value="x">X ascending</option>
+              <option value="path">Path</option>
+            </select>
+          </label>
+          <label>
+            Format
+            <select id="outputFormat">
+              <option value="dat">DAT</option>
+              <option value="csv">CSV</option>
+            </select>
+          </label>
+          <button id="exportButton" type="button">Export DAT</button>
+          <div class="stats">
+            <span id="selectedCount">0 paths</span>
+            <span id="pointCount">0 points</span>
+          </div>
+          <div id="selectedList" class="selected-list"></div>
+          <textarea id="csvPreview" readonly spellcheck="false"></textarea>
+        </section>
+      </aside>
+
+      <section class="workspace" aria-label="PDF page">
+        <div id="viewport" class="viewport">
+          <div id="pageWrap" class="page-wrap">
+            <div id="svgHost"></div>
+            <svg id="overlay" aria-hidden="true"></svg>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

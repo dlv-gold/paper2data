@@ -1,0 +1,9 @@
+.paper2data/
+.plotdigitizer/
+node_modules/
+npm-debug.log*
+*.csv
+*.dat
+*.pdf
+.DS_Store
+Thumbs.db

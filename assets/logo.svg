@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-label="paper2data logo">
+  <rect width="1024" height="1024" rx="164" fill="#fbfbf8"/>
+  <rect x="116" y="104" width="548" height="704" rx="34" fill="#ffffff" stroke="#1d2524" stroke-width="28"/>
+  <path d="M664 104v166h166" fill="none" stroke="#1d2524" stroke-width="28" stroke-linejoin="round"/>
+  <path d="M664 104l166 166v538c0 19-15 34-34 34H300" fill="none" stroke="#1d2524" stroke-width="28" stroke-linejoin="round"/>
+  <path d="M220 650H586" fill="none" stroke="#60706c" stroke-width="20" stroke-linecap="round"/>
+  <path d="M220 650V316" fill="none" stroke="#60706c" stroke-width="20" stroke-linecap="round"/>
+  <path d="M242 592c42-82 78-120 118-114 53 8 74 101 132 92 50-8 77-88 126-172" fill="none" stroke="#0f8b8d" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="360" cy="478" r="24" fill="#d1495b"/>
+  <circle cx="492" cy="570" r="24" fill="#d1495b"/>
+  <circle cx="618" cy="398" r="24" fill="#d1495b"/>
+  <path d="M592 738h250" fill="none" stroke="#0f8b8d" stroke-width="34" stroke-linecap="round"/>
+  <path d="M742 638l100 100-100 100" fill="none" stroke="#0f8b8d" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="174" y="910" fill="#1d2524" font-family="Arial, Helvetica, sans-serif" font-size="92" font-weight="700" letter-spacing="0">paper2data</text>
+</svg>
