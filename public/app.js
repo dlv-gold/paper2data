@@ -9,6 +9,8 @@ const state = {
   selected: [],
   pan: { x: 24, y: 24 },
   panning: null,
+  controlPan: false,
+  suppressPageClick: false,
   viewBox: { x: 0, y: 0, width: 612, height: 792 },
   calibration: {
     x1: null,
@@ -82,6 +84,9 @@ els.x1Value.addEventListener("input", updateOutput);
 els.x2Value.addEventListener("input", updateOutput);
 els.y1Value.addEventListener("input", updateOutput);
 els.y2Value.addEventListener("input", updateOutput);
+window.addEventListener("keydown", onWindowKeyDown);
+window.addEventListener("keyup", onWindowKeyUp);
+window.addEventListener("blur", () => setControlPan(false));
 
 document.querySelectorAll("[data-marker]").forEach(button => {
   button.addEventListener("click", () => {
@@ -189,7 +194,9 @@ function onPagePointerDown(event) {
 }
 
 function onPagePointerMove(event) {
-  if (state.mode === "select" || state.mode === "calibrate") {
+  if (state.panning || canPan(event)) {
+    setHovered(null);
+  } else if (state.mode === "select" || state.mode === "calibrate") {
     setHovered(traceableElement(event.target));
   } else {
     setHovered(null);
@@ -197,6 +204,12 @@ function onPagePointerMove(event) {
 }
 
 function onPageClick(event) {
+  if (state.suppressPageClick || event.ctrlKey) {
+    state.suppressPageClick = false;
+    event.preventDefault();
+    return;
+  }
+
   if (state.mode === "calibrate") {
     const target = traceableElement(event.target);
     state.calibration[state.marker] = target ? elementCenterToSvg(target) : eventToSvgPoint(event);
@@ -284,8 +297,37 @@ function setMode(mode) {
   els.panMode.classList.toggle("active", mode === "pan");
   els.selectMode.classList.toggle("active", mode === "select");
   els.calibrateMode.classList.toggle("active", mode === "calibrate");
-  els.viewport.classList.toggle("pan-ready", mode === "pan");
+  updatePanCursor();
   setHovered(null);
+}
+
+function onWindowKeyDown(event) {
+  if (event.key === "Control") {
+    setControlPan(true);
+  }
+}
+
+function onWindowKeyUp(event) {
+  if (event.key === "Control") {
+    setControlPan(false);
+  }
+}
+
+function setControlPan(enabled) {
+  if (state.controlPan === enabled) return;
+  state.controlPan = enabled;
+  updatePanCursor();
+  if (enabled) {
+    setHovered(null);
+  }
+}
+
+function canPan(event) {
+  return state.mode === "pan" || state.controlPan || Boolean(event?.ctrlKey);
+}
+
+function updatePanCursor() {
+  els.viewport.classList.toggle("pan-ready", canPan());
 }
 
 function updateMarkerButtons() {
@@ -309,14 +351,15 @@ function onViewportWheel(event) {
 }
 
 function onViewportPointerDown(event) {
-  if (state.mode !== "pan" || event.button !== 0) return;
+  if (!canPan(event) || event.button !== 0) return;
 
   state.panning = {
     pointerId: event.pointerId,
     startX: event.clientX,
     startY: event.clientY,
     panX: state.pan.x,
-    panY: state.pan.y
+    panY: state.pan.y,
+    suppressClick: state.mode !== "pan"
   };
   els.viewport.setPointerCapture(event.pointerId);
   els.viewport.classList.add("panning");
@@ -334,11 +377,18 @@ function onViewportPointerMove(event) {
 function endPan(event) {
   if (!state.panning || event.pointerId !== state.panning.pointerId) return;
 
+  const suppressClick = state.panning.suppressClick;
   if (els.viewport.hasPointerCapture(event.pointerId)) {
     els.viewport.releasePointerCapture(event.pointerId);
   }
   state.panning = null;
   els.viewport.classList.remove("panning");
+  if (suppressClick) {
+    state.suppressPageClick = true;
+    window.setTimeout(() => {
+      state.suppressPageClick = false;
+    }, 250);
+  }
 }
 
 function resetView() {
