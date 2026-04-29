@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "start": "node server.mjs",
-    "dev": "node server.mjs"
+    "dev": "node server.mjs",
+    "check": "node --check server.mjs && node --check public/app.js"
   },
   "license": "MIT"
 }
